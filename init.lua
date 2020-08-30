@@ -130,7 +130,7 @@ minetest.register_node("rainbarrel:barrel", {
 
 local w = "group:wood"
 local c = "default:cobble"
-local b = if minetest.get_modpath("bucket_wooden") then "bucket_wooden:bucket_empty" else "bucket:bucket_empty" end
+local b = minetest.get_modpath("bucket_wooden") and "bucket_wooden:bucket_empty" or "bucket:bucket_empty"
 minetest.register_craft({
 	output="rainbarrel:barrel",
 	recipe={
