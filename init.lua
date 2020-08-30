@@ -24,25 +24,39 @@ local function barrel_drain(pos,_,player)
 	
 	local meta = minetest.get_meta(pos)
 	local water = meta:get_float("water") or 0.0
-	if not (player:get_wielded_item():get_name() == "bucket:bucket_empty") then return end
+	local wielded_item = player:get_wielded_item():get_name()
+	if not (wielded_item == "bucket:bucket_empty" or wielded_item == "bucket_wooden:bucket_empty") then return end
 	if water >= 1.0 then --Code copied from buckets
 		water = water - 1.0
 		local item_count = player:get_wielded_item():get_count()
-		local giving_back = "bucket:bucket_water"
-		if item_count > 1 then
 
+		local bucket
+		if minetest.get_modpath("bucket_wooden") then
+			if (wielded_item == "bucket_wooden:bucket_empty") then
+				bucket = "bucket_wooden:bucket_"
+			else
+				bucket = "bucket:bucket_"
+			end
+		else
+			bucket = "bucket:bucket_"
+		end
+
+		local giving_back
+		if item_count > 1 then
 			-- if space in inventory add filled bucked, otherwise drop as item
 			local inv = player:get_inventory()
-			if inv:room_for_item("main", {name="bucket:bucket_water"}) then
-				inv:add_item("main", "bucket:bucket_water")
+			if inv:room_for_item("main", {name=bucket.."water"}) then
+				inv:add_item("main", bucket.."water")
 			else
 				local pos = player:getpos()
 				pos.y = math.floor(pos.y + 0.5)
-				minetest.add_item(pos, "bucket:bucket_water")
+				minetest.add_item(pos, bucket.."water")
 			end
 
 			-- set to return empty buckets minus 1
-			giving_back = "bucket:bucket_empty "..tostring(item_count-1)
+			giving_back = bucket.."empty "..tostring(item_count-1)
+		else
+			giving_back = bucket.."water"
 		end
 		player:set_wielded_item(giving_back)
 		meta:set_float("water", water)
@@ -116,7 +130,7 @@ minetest.register_node("rainbarrel:barrel", {
 
 local w = "group:wood"
 local c = "default:cobble"
-local b = "bucket:bucket_empty"
+local b = if minetest.get_modpath("bucket_wooden") then "bucket_wooden:bucket_empty" else "bucket:bucket_empty" end
 minetest.register_craft({
 	output="rainbarrel:barrel",
 	recipe={
@@ -127,6 +141,7 @@ minetest.register_craft({
 	
 })
 
+local b = "bucket:bucket_empty"
 minetest.register_craft({
 	output="rainbarrel:well",
 	recipe={
