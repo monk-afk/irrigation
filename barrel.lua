@@ -69,7 +69,7 @@ minetest.register_node("irrigation:water_barrel", {
   paramtype = "light",
   backface_culling = true,
   short_description = S("Water Barrel"),
-  description = "Supplies water to soil up to 4 hours"
+  description = "Supplies water to soil up to 4 hours",
   groups = {choppy = 3},
   tiles = {"irrigation_barrel_top.png", "irrigation_barrel_bottom.png", "irrigation_barrel_sides.png"},
   collision_box = set_nodebox(16, water_level(1)),
