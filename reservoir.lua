@@ -40,6 +40,7 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
         end
 
         place_reservoir(pos, reservoir_type.."_holding", water_level, true)
+        itemstack:replace("bucket:bucket_empty")
       end
     end
     return itemstack
