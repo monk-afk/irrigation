@@ -1,6 +1,6 @@
 -- Minetest 0.4 mod: bucket
 -- modified slightly for compatibility with irrigation
--- See README.txt for licensing and other information.
+-- See LICENSE.txt for licensing and other information.
 
 -- Load support for MT game translation.
 local S = minetest.get_translator("bucket")
