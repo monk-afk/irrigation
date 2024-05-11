@@ -1,13 +1,13 @@
 Irrigation
 ----------
-monk (c.2024)
-
 Adds a level of difficulty to farming with the addition of
 non-spilling and self-exhausing water group nodes to wet dry soil.
 
 Keep their water supplies full, or let the farm dry up.
 
 Optionally discourages water griefing by limiting bucket spilling.
+
+monk (c.2024)
 
 Details
 -------
@@ -37,9 +37,9 @@ Details
   - Disallows spilling liquid if area is not protected,
     also if y-50 contains protector not owned by player
 
-
 Attributes
 ----------
+```
 Irrigation is Based on the Rainbarrel mod
   https://notabug.org/Piezo_/rainbarrel
   GNU Lesser General Public License, version 2.1
@@ -62,7 +62,7 @@ Irrigation is Based on the Rainbarrel mod
   CC0 1.0 Universal
   Copyright (c) 2015-2021 kilbith <jeanpatrick.guerrero@gmail.com>
   CC0 (credits: Gambit, kilbith, Cisoun)
-
+```
 
 ##
 **`0.0.1`**
