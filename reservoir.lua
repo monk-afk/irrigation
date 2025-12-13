@@ -2,16 +2,14 @@ local S = minetest.get_translator("irrigation")
 
 local drain_time = 3600.0  -- drain time per water_level
 
-local floor = math.floor
 local function level_percent(water_level)
-  return floor((water_level / 63) * 100)
+  return math.floor((water_level / 63) * 100)
 end
-
-local meta = minetest.get_meta
 
 local function place_reservoir(pos, reservoir_type, water_level, start_drain)
   minetest.set_node(pos, {name = reservoir_type, param2 = water_level})
-  local meta = meta(pos)
+  local meta = core.get_meta(pos)
+
   meta:set_int("water", water_level)
   meta:set_string("infotext", "Water Reservoir ("..level_percent((water_level or 0)).."%)")
 
@@ -24,7 +22,7 @@ end
 
 local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
   if not pos then return end
-  local water_level = (meta(pos):get_int("water") or 0)
+  local water_level = core.get_meta(pos):get_int("water") or 0
   local reservoir_type = "irrigation:water_reservoir"
 
   if (clicker and clicker:is_player()) and itemstack then
@@ -33,7 +31,7 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
 
     if wield_item == "bucket:bucket_water" or wield_item == "bucket:bucket_river_water" then
       water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
-    
+
       if water_level <= 63 then
         if minetest.get_node_timer(pos):is_started() then
           minetest.get_node_timer(pos):stop()
