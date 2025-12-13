@@ -1,7 +1,7 @@
 --[[ Piping is supposed to connect to the reservoir to supply water to the farm area.
   But I haven't gotten around to figuring out how to make this work. ]]
 
-local S = minetest.get_translator("irrigation")
+local S = core.get_translator(core.get_current_modname())
 
 local set_nodebox = function(box)
 	local fixed = {}
@@ -17,7 +17,7 @@ local set_nodebox = function(box)
 	return fixed
 end
 
-minetest.register_node("irrigation:water_pipe", {
+core.register_node("irrigation:water_pipe", {
     description = S("Irrigation Line"),
     paramtype = "light",
     walkable = true,

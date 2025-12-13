@@ -1,4 +1,4 @@
-local S = minetest.get_translator("irrigation")
+local S = core.get_translator(core.get_current_modname())
 
 local drain_time = 3600.0  -- drain time per water_level
 
@@ -7,16 +7,16 @@ local function level_percent(water_level)
 end
 
 local function place_reservoir(pos, reservoir_type, water_level, start_drain)
-  minetest.set_node(pos, {name = reservoir_type, param2 = water_level})
+  core.set_node(pos, {name = reservoir_type, param2 = water_level})
   local meta = core.get_meta(pos)
 
   meta:set_int("water", water_level)
   meta:set_string("infotext", "Water Reservoir ("..level_percent((water_level or 0)).."%)")
 
   if start_drain then
-    minetest.get_node_timer(pos):start(drain_time)
+    core.get_node_timer(pos):start(drain_time)
   else
-    minetest.get_node_timer(pos):stop()
+    core.get_node_timer(pos):stop()
   end
 end
 
@@ -33,8 +33,8 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
       water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
 
       if water_level <= 63 then
-        if minetest.get_node_timer(pos):is_started() then
-          minetest.get_node_timer(pos):stop()
+        if core.get_node_timer(pos):is_started() then
+          core.get_node_timer(pos):stop()
         end
 
         place_reservoir(pos, reservoir_type.."_holding", water_level, true)
@@ -59,7 +59,7 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
 end
 
 
-minetest.register_node("irrigation:water_reservoir_holding", {
+core.register_node("irrigation:water_reservoir_holding", {
   drawtype = "glasslike_framed",
   paramtype2 = "glasslikeliquidlevel",
   backface_culling = false,
@@ -69,15 +69,15 @@ minetest.register_node("irrigation:water_reservoir_holding", {
   tiles = {"irrigation_reservoir.png"},
   drop = "irrigation:water_reservoir",
   use_texture_alpha = "blend",
-  special_tiles = {minetest.registered_nodes["default:water_source"].tiles[1]},
+  special_tiles = {core.registered_nodes["default:water_source"].tiles[1]},
   on_rightclick = reservoir_set_water,
   on_timer = reservoir_set_water,
   on_destruct = function(pos)
-    minetest.get_node_timer(pos):stop()
+    core.get_node_timer(pos):stop()
   end,
 })
 
-minetest.register_node("irrigation:water_reservoir", {
+core.register_node("irrigation:water_reservoir", {
   drawtype = "glasslike_framed",
   paramtype2 = "glasslikeliquidlevel",
   backface_culling = false,
@@ -90,7 +90,7 @@ minetest.register_node("irrigation:water_reservoir", {
   on_rightclick = reservoir_set_water,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "irrigation:water_reservoir",
 	recipe = {
 		{"group:glass", 			"",			      	"group:glass"},

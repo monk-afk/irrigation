@@ -1,4 +1,4 @@
-local path = minetest.get_modpath(minetest.get_current_modname()).."/"
+local path = core.get_modpath(core.get_current_modname()) .. "/"
 
 dofile(path.."well.lua")
 
@@ -10,14 +10,14 @@ dofile(path.."reservoir.lua")
 
 -- dofile(path.."bucket.lua")
 
--- 
--- minetest.override_item("default:water_source", {
+--
+-- core.override_item("default:water_source", {
 -- 	liquid_renewable = false,
 -- })
 
--- minetest.override_item("default:water_flowing", {
+-- core.override_item("default:water_flowing", {
 -- 	liquid_renewable = false,
 -- })
 
-minetest.register_alias("homedecor:well", "irrigation:well")
-minetest.register_alias("xdecor:barrel", "irrigation:water_barrel")
+core.register_alias("homedecor:well", "irrigation:well")
+core.register_alias("xdecor:barrel", "irrigation:water_barrel")
