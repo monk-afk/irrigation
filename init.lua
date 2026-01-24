@@ -8,16 +8,5 @@ dofile(path.."reservoir.lua")
 
 -- dofile(path.."pipe.lua") -- to do, allows extending the reservoir watering range
 
--- dofile(path.."bucket.lua")
-
---
--- core.override_item("default:water_source", {
--- 	liquid_renewable = false,
--- })
-
--- core.override_item("default:water_flowing", {
--- 	liquid_renewable = false,
--- })
-
 core.register_alias("homedecor:well", "irrigation:well")
 core.register_alias("xdecor:barrel", "irrigation:water_barrel")
