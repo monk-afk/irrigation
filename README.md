@@ -17,8 +17,8 @@ Details
   - Time to fill to max capacity: 24 hours
 
 ## barrel.lua
-  - Hydrates soil for up to 4 hours
-  - 4 buckets to fill max capacity
+  - Hydrates soil for up to 3 hours
+  - 3 buckets to fill max capacity
 
 ## reservoir.lua
   - Hydrates soil for up to 8 hours
