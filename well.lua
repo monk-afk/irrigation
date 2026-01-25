@@ -10,16 +10,14 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
   local water_level = (meta:get_int("water") or 0)
 
   if (clicker and clicker:is_player()) and itemstack then
+    if water_level < 1 then
+      core.chat_send_player(clicker:get_player_name(), S("Well is dry"))
+      return
+    end
 
     local wield_item = clicker:get_wielded_item():get_name()
 
     if wield_item ~= "bucket:bucket_empty" then
-      return
-    end
-    local name = clicker:get_player_name()
-
-    if water_level < 1 then
-      core.chat_send_player(name, S("Well is dry"))
       return
     end
 
