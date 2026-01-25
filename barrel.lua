@@ -43,7 +43,7 @@ local function barrel_set_water(pos, node, clicker, itemstack, pointed_thing)
         if core.get_node_timer(pos):is_started() then
           core.get_node_timer(pos):stop()
         end
-        core.set_node(pos, {name = barrel_type.."_holding_"..water_level})
+        core.set_node(pos, {name = barrel_type .. "_holding_" .. water_level})
         core.get_node_timer(pos):start(drain_time)
         itemstack:replace("bucket:bucket_empty")
       end
@@ -70,8 +70,12 @@ core.register_node("irrigation:water_barrel", {
   backface_culling = true,
   short_description = S("Water Barrel"),
   description = S("Supplies water to soil up to 4 hours"),
-  groups = {choppy = 3},
-  tiles = {"irrigation_barrel_top.png", "irrigation_barrel_bottom.png", "irrigation_barrel_sides.png"},
+  groups = { choppy = 3 },
+  tiles = {
+    "irrigation_barrel_top.png",
+    "irrigation_barrel_bottom.png",
+    "irrigation_barrel_sides.png"
+  },
   collision_box = set_nodebox(16, water_level(1)),
   node_box = set_nodebox(16, water_level(1)),
 
@@ -93,9 +97,12 @@ for i = 1,3 do
     short_description = S("Water Barrel"),
     description = S("Water barrel holding water"),
     groups = {choppy = 3, water = 1, not_in_creative_inventory = 1},
-    tiles = {"irrigation_barrel_top_water.png", "irrigation_barrel_bottom.png", "irrigation_barrel_sides.png"},
+    tiles = {
+      "irrigation_barrel_top_water.png",
+      "irrigation_barrel_bottom.png",
+      "irrigation_barrel_sides.png"
+    },
     drop = "irrigation:water_barrel",
-
     collision_box = set_nodebox(16, water_level(1)),
     node_box = set_nodebox(16, water_level(i * 5)),
 
@@ -103,7 +110,7 @@ for i = 1,3 do
     on_construct =  function(pos)
       local meta = core.get_meta(pos)
       meta:set_int("water", i)
-      meta:set_string("infotext", "Water Barrel ("..i..")")
+      meta:set_string("infotext", "Water Barrel (" .. i .. ")")
     end,
     on_timer = barrel_set_water,
 
@@ -111,7 +118,7 @@ for i = 1,3 do
       core.get_node_timer(pos):stop()
     end,
   }
-  core.register_node("irrigation:water_barrel_holding_"..i, node_def)
+  core.register_node("irrigation:water_barrel_holding_" .. i, node_def)
 end
 
 
