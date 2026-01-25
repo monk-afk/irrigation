@@ -1,12 +1,13 @@
-local path = core.get_modpath(core.get_current_modname()) .. "/"
+-- Irrigation
+local path = core.get_modpath(core.get_current_modname())
 
-dofile(path.."well.lua")
+dofile(path .. "/well.lua")
+dofile(path .. "/barrel.lua")
 
-dofile(path.."barrel.lua")
+local on_construct_or_destruct = dofile(path .. "/pipe.lua")
 
-dofile(path.."reservoir.lua")
+dofile(path .. "/reservoir.lua")(on_construct_or_destruct)
 
--- dofile(path.."pipe.lua") -- to do, allows extending the reservoir watering range
-
+  -- aliases to remove ambiguity, no dependency lost if removed
 core.register_alias("homedecor:well", "irrigation:well")
 core.register_alias("xdecor:barrel", "irrigation:water_barrel")
