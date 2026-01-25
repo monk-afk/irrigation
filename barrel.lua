@@ -35,7 +35,6 @@ local function barrel_set_water(pos, node, clicker, itemstack, pointed_thing)
   local barrel_type = "irrigation:water_barrel"
 
   if (clicker and clicker:is_player()) and itemstack then
-    local inv = clicker:get_inventory()
     local wield_item = clicker:get_wielded_item():get_name()
     if wield_item == "bucket:bucket_water" or wield_item == "bucket:bucket_river_water" then
       water_level = water_level + 1
