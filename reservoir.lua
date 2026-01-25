@@ -2,16 +2,12 @@ local S = core.get_translator(core.get_current_modname())
 
 local drain_time = 3600.0  -- drain time per water_level
 
-local function level_percent(water_level)
-  return math.floor((water_level / 63) * 100)
-end
-
 local function place_reservoir(pos, reservoir_type, water_level, start_drain)
   core.set_node(pos, {name = reservoir_type, param2 = water_level})
   local meta = core.get_meta(pos)
 
   meta:set_int("water", water_level)
-  meta:set_string("infotext", "Water Reservoir ("..level_percent((water_level or 0)).."%)")
+  meta:set_string("infotext", "Water Reservoir (" .. math.floor((water_level / 63) * 100) .. "%)")
 
   if start_drain then
     core.get_node_timer(pos):start(drain_time)
