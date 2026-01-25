@@ -33,7 +33,7 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
           core.get_node_timer(pos):stop()
         end
 
-        place_reservoir(pos, reservoir_type.."_holding", water_level, true)
+        place_reservoir(pos, reservoir_type .. "_active", water_level, true)
         itemstack:replace("bucket:bucket_empty")
       end
     end
@@ -44,7 +44,7 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
     water_level = water_level - 8
 
     if water_level > 0 then
-      place_reservoir(pos, reservoir_type.."_holding", water_level, true)
+      place_reservoir(pos, reservoir_type .. "_active", water_level, true)
       return
     else
       water_level = 0
@@ -54,8 +54,9 @@ local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
   end
 end
 
+core.register_alias("irrigation:water_reservoir_holding", "irrigation:water_reservoir_active")
 
-core.register_node("irrigation:water_reservoir_holding", {
+core.register_node("irrigation:water_reservoir_active", {
   drawtype = "glasslike_framed",
   paramtype2 = "glasslikeliquidlevel",
   backface_culling = false,
