@@ -93,8 +93,8 @@ core.register_node("irrigation:water_reservoir", {
 core.register_craft({
 	output = "irrigation:water_reservoir",
 	recipe = {
-		{"group:glass", 			"",			      	"group:glass"},
-		{"default:iron_lump",	"",		      		"default:iron_lump"},
-		{"group:glass",	  		"group:glass",	"group:glass"}
+		{"default:glass",     "",              "default:glass"},
+		{"default:iron_lump", "",              "default:iron_lump"},
+		{"default:glass",     "default:glass", "default:glass"}
 	}
 })

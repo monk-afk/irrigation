@@ -69,7 +69,7 @@ core.register_node("irrigation:water_barrel", {
   paramtype = "light",
   backface_culling = true,
   short_description = S("Water Barrel"),
-  description = "Supplies water to soil up to 4 hours",
+  description = S("Supplies water to soil up to 4 hours"),
   groups = {choppy = 3},
   tiles = {"irrigation_barrel_top.png", "irrigation_barrel_bottom.png", "irrigation_barrel_sides.png"},
   collision_box = set_nodebox(16, water_level(1)),
@@ -90,7 +90,8 @@ for i = 1,3 do
     drawtype = "nodebox",
     paramtype = "light",
     backface_culling = true,
-    description = S("Water Barrel"),
+    short_description = S("Water Barrel"),
+    description = S("Water barrel holding water"),
     groups = {choppy = 3, water = 1, not_in_creative_inventory = 1},
     tiles = {"irrigation_barrel_top_water.png", "irrigation_barrel_bottom.png", "irrigation_barrel_sides.png"},
     drop = "irrigation:water_barrel",
@@ -117,8 +118,8 @@ end
 core.register_craft({
   output = "irrigation:water_barrel",
   recipe = {
-    {"group:wood",        "",		    		"group:wood"},
-    {"default:iron_lump", "",   				"default:iron_lump"},
-    {"group:wood",        "group:wood",	"group:wood"}
+    {"default:wood",      "",             "default:wood"},
+    {"default:iron_lump", "",	            "default:iron_lump"},
+    {"default:wood",      "default:wood", "default:wood"}
   }
 })
