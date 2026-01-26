@@ -21,6 +21,14 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
       return
     end
 
+    water_level = water_level - 1
+    meta:set_int("water", water_level)
+    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
+
+    if not core.get_node_timer(pos):is_started() then
+      core.get_node_timer(pos):start(fill_time)
+    end
+
     local giving_back = "bucket:bucket_water 1"
 
     if wield_item.count > 1 then
@@ -37,14 +45,6 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
       end
 
       giving_back = "bucket:bucket_empty " .. tostring(wield_item.count - 1)
-    end
-
-    water_level = water_level - 1
-    meta:set_int("water", water_level)
-    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
-
-    if not core.get_node_timer(pos):is_started() then
-      core.get_node_timer(pos):start(fill_time)
     end
 
     return ItemStack(giving_back)
