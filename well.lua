@@ -15,9 +15,7 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
       return
     end
 
-    local wield_item = itemstack:to_table()
-
-    if wield_item.name ~= "bucket:bucket_empty" then
+    if itemstack:get_name() ~= "bucket:bucket_empty" then
       return
     end
 
@@ -29,25 +27,25 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
       core.get_node_timer(pos):start(fill_time)
     end
 
-    local giving_back = "bucket:bucket_water 1"
+    if itemstack:get_count() > 1 then
+      itemstack:take_item(1)
 
-    if wield_item.count > 1 then
-
+      local full_bucket = ItemStack("bucket:bucket_water")
       local inv = clicker:get_inventory()
 
-      if inv:room_for_item("main", {name = giving_back}) then
-        inv:add_item("main", giving_back)
-
+      if inv:room_for_item("main", full_bucket) then
+        inv:add_item("main", full_bucket)
       else
         local pos = clicker:get_pos()
         pos.y = math.floor(pos.y + 0.5)
-        core.add_item(pos, giving_back)
+        core.add_item(pos, full_bucket)
       end
-
-      giving_back = "bucket:bucket_empty " .. tostring(wield_item.count - 1)
+    else
+      itemstack:replace("bucket:bucket_water")
     end
 
-    return ItemStack(giving_back)
+    return itemstack
+
   else
     water_level = water_level + 1
     meta:set_int("water", water_level)
