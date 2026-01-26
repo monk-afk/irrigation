@@ -4,27 +4,45 @@ local fill_time = 864.0 -- 14.4 minutes
 local max_water = 100   -- 100 water levels (buckets)
                         -- 24 hours to fill
 
-local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
-  if not pos then return end
+local function update_water_level(pos, change)
   local meta = core.get_meta(pos)
-  local water_level = (meta:get_int("water") or 0)
+  local current = meta:get_int("water") or 0
+  local water = current + change
+
+  if water < 0 then
+    return nil
+  end
+
+  water = math.min(water, max_water)
+
+  local timer = core.get_node_timer(pos)
+
+  if water >= max_water then
+    timer:stop()
+  else
+    if not timer:is_started() then
+      timer:start(fill_time)
+    end
+  end
+
+  meta:set_int("water", water)
+  meta:set_string("infotext", "Well water: (" .. water .. ")")
+
+  return true
+end
+
+
+local function player_take_water(pos, node, clicker, itemstack, pointed_thing)
+  if not pos then return end
 
   if (clicker and clicker:is_player()) and itemstack then
-    if water_level < 1 then
-      core.chat_send_player(clicker:get_player_name(), S("Well is dry"))
-      return
-    end
-
     if itemstack:get_name() ~= "bucket:bucket_empty" then
       return
     end
 
-    water_level = water_level - 1
-    meta:set_int("water", water_level)
-    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
-
-    if not core.get_node_timer(pos):is_started() then
-      core.get_node_timer(pos):start(fill_time)
+    if not update_water_level(pos, -1) then
+      core.chat_send_player(clicker:get_player_name(), S("Well is dry"))
+      return
     end
 
     if itemstack:get_count() > 1 then
@@ -45,19 +63,6 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
     end
 
     return itemstack
-
-  else
-    water_level = water_level + 1
-    meta:set_int("water", water_level)
-    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
-
-    if water_level < max_water then
-      core.get_node_timer(pos):start(fill_time)
-      return
-    else
-      core.get_node_timer(pos):stop()
-      return
-    end
   end
 end
 
@@ -78,17 +83,14 @@ core.register_node("irrigation:well", {
   selection_box = {type="fixed", fixed={-0.6,-0.5,-0.6,0.6,1.0,0.6}},
 
   on_timer = function(pos)
-    well_set_water(pos)
+    update_water_level(pos, 1)
   end,
 
   on_construct = function(pos)
-    local meta = core.get_meta(pos)
-    meta:set_int("water", 0)
-    meta:set_string("infotext", "Well water: (0)")
-    core.get_node_timer(pos):start(fill_time)
+    update_water_level(pos, 0)
   end,
 
-  on_rightclick = well_set_water,
+  on_rightclick = player_take_water,
 })
 
 
