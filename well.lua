@@ -15,31 +15,33 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
       return
     end
 
-    local wield_item = clicker:get_wielded_item():get_name()
+    local wield_item = itemstack:to_table()
 
-    if wield_item ~= "bucket:bucket_empty" then
+    if wield_item.name ~= "bucket:bucket_empty" then
       return
     end
 
     local giving_back = "bucket:bucket_water 1"
-    local item_count = clicker:get_wielded_item():get_count()
-    if item_count > 1 then
+
+    if wield_item.count > 1 then
 
       local inv = clicker:get_inventory()
+
       if inv:room_for_item("main", {name = giving_back}) then
         inv:add_item("main", giving_back)
+
       else
         local pos = clicker:get_pos()
         pos.y = math.floor(pos.y + 0.5)
         core.add_item(pos, giving_back)
       end
 
-      giving_back = "bucket:bucket_empty "..tostring(item_count-1)
+      giving_back = "bucket:bucket_empty " .. tostring(wield_item.count - 1)
     end
 
     water_level = water_level - 1
     meta:set_int("water", water_level)
-    meta:set_string("infotext", "Well water: ("..water_level..")")
+    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
 
     if not core.get_node_timer(pos):is_started() then
       core.get_node_timer(pos):start(fill_time)
@@ -49,7 +51,7 @@ local function well_set_water(pos, node, clicker, itemstack, pointed_thing)
   else
     water_level = water_level + 1
     meta:set_int("water", water_level)
-    meta:set_string("infotext", "Well water: ("..water_level..")")
+    meta:set_string("infotext", "Well water: (" .. water_level .. ")")
 
     if water_level < max_water then
       core.get_node_timer(pos):start(fill_time)
