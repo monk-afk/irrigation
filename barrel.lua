@@ -37,20 +37,23 @@ local function barrel_set_water(pos, node, clicker, itemstack, pointed_thing)
   if (clicker and clicker:is_player()) and itemstack then
     local wield_item = itemstack:get_name()
 
-    if wield_item == "bucket:bucket_water" or wield_item == "bucket:bucket_river_water" then
-      water_level = water_level + 1
-      local node_timer = core.get_node_timer(pos)
-
-      if water_level <= 3 then
-        if node_timer:is_started() then
-          node_timer:stop()
-        end
-
-        core.set_node(pos, {name = barrel_type .. "_holding_" .. water_level})
-        node_timer:start(drain_time)
-        itemstack:replace("bucket:bucket_empty")
-      end
+    if wield_item ~= "bucket:bucket_water" and wield_item ~= "bucket:bucket_river_water" then
+      return itemstack
     end
+
+    water_level = water_level + 1
+    local node_timer = core.get_node_timer(pos)
+
+    if water_level <= 3 then
+      if node_timer:is_started() then
+        node_timer:stop()
+      end
+
+      core.set_node(pos, {name = barrel_type .. "_holding_" .. water_level})
+      node_timer:start(drain_time)
+      itemstack:replace("bucket:bucket_empty")
+    end
+
     return itemstack
   else
     water_level = water_level - 1
