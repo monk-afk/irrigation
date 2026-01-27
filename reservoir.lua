@@ -26,17 +26,19 @@ return function(on_construct_or_destruct)
     if clicker and clicker:is_player() and itemstack then
       local wield_item = itemstack:get_name()
 
-      if wield_item == "bucket:bucket_water" or wield_item == "bucket:bucket_river_water" then
-        water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
+      if wield_item ~= "bucket:bucket_water" and wield_item ~= "bucket:bucket_river_water" then
+        return itemstack
+      end
 
-        if water_level <= 63 then
-          if core.get_node_timer(pos):is_started() then
-            core.get_node_timer(pos):stop()
-          end
+      water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
 
-          place_reservoir(pos, reservoir_type .. "_active", water_level, true)
-          itemstack:replace("bucket:bucket_empty")
+      if water_level <= 63 then
+        if core.get_node_timer(pos):is_started() then
+          core.get_node_timer(pos):stop()
         end
+
+        place_reservoir(pos, reservoir_type .. "_active", water_level, true)
+        itemstack:replace("bucket:bucket_empty")
       end
       return itemstack
 
