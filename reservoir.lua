@@ -2,6 +2,7 @@ return function(on_construct_or_destruct)
   local S = core.get_translator(core.get_current_modname())
   local drain_time = 3600.0  -- drain time per water_level
 
+
   local function place_reservoir(pos, reservoir_type, water_level, start_drain)
     core.swap_node(pos, {name = reservoir_type, param2 = water_level})
     local meta = core.get_meta(pos)
@@ -18,6 +19,16 @@ return function(on_construct_or_destruct)
     on_construct_or_destruct(pos, reservoir_type, start_drain)
   end
 
+
+  local function new_water_level(water, change)
+    local new = math.min(math.max(water + change, 0), 63)
+    if new == water then
+      return nil
+    end
+    return new
+  end
+
+
   local function reservoir_set_water(pos, node, clicker, itemstack)
     local meta = core.get_meta(pos)
     local water = meta:get_int("water") or 0
@@ -30,32 +41,29 @@ return function(on_construct_or_destruct)
         return itemstack
       end
 
-      local water_level = math.min(water + 16, 63)  -- 4 water buckets to fill reservoir
+      local water_level = new_water_level(water, 16)
 
-      if water_level <= 63 then
-        if core.get_node_timer(pos):is_started() then
-          core.get_node_timer(pos):stop()
-        end
-
-        place_reservoir(pos, reservoir_type .. "_active", water_level, true)
-        itemstack:replace("bucket:bucket_empty")
+      if not water_level then
+        return itemstack -- reservoir full
       end
+
+      place_reservoir(pos, reservoir_type .. "_active", water_level, true)
+      itemstack:replace("bucket:bucket_empty")
+
       return itemstack
-
-    else
-      -- Eight water levels, 60 minutes per level, 8 hours of water on a full tank
-      local water_level = water - 8
-
-      if water_level > 0 then
-        place_reservoir(pos, reservoir_type .. "_active", water_level, true)
-        return
-      else
-        water_level = 0
-        place_reservoir(pos, reservoir_type, water_level, false)
-        return
-      end
     end
+
+    -- timer drain
+    local water_level = new_water_level(water, -8)
+
+    if water_level == 0 then
+      place_reservoir(pos, reservoir_type, water_level, false)
+      return
+    end
+
+    place_reservoir(pos, reservoir_type .. "_active", water_level, true)
   end
+
 
   core.register_alias("irrigation:water_reservoir_holding", "irrigation:water_reservoir_active")
 
