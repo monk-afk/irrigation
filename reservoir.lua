@@ -18,9 +18,9 @@ return function(on_construct_or_destruct)
     on_construct_or_destruct(pos, reservoir_type, start_drain)
   end
 
-  local function reservoir_set_water(pos, node, clicker, itemstack, pointed_thing)
-    if not pos then return end
-    local water_level = core.get_meta(pos):get_int("water") or 0
+  local function reservoir_set_water(pos, node, clicker, itemstack)
+    local meta = core.get_meta(pos)
+    local water = meta:get_int("water") or 0
     local reservoir_type = "irrigation:water_reservoir"
 
     if clicker and clicker:is_player() and itemstack then
@@ -30,7 +30,7 @@ return function(on_construct_or_destruct)
         return itemstack
       end
 
-      water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
+      local water_level = math.min(water + 16, 63)  -- 4 water buckets to fill reservoir
 
       if water_level <= 63 then
         if core.get_node_timer(pos):is_started() then
@@ -44,7 +44,7 @@ return function(on_construct_or_destruct)
 
     else
       -- Eight water levels, 60 minutes per level, 8 hours of water on a full tank
-      water_level = water_level - 8
+      local water_level = water - 8
 
       if water_level > 0 then
         place_reservoir(pos, reservoir_type .. "_active", water_level, true)
