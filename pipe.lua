@@ -206,7 +206,7 @@ core.register_node(inactive_pipe, {
     inactive_reservoir, active_reservoir,
     inactive_pipe, active_pipe,
   },
-  groups = {choppy = 2},
+  groups = {choppy = 2, snappy = 1},
   on_construct = function(pos)
     on_construct_or_destruct(pos, inactive_pipe, true)
   end
@@ -238,7 +238,7 @@ core.register_node(active_pipe, {
     inactive_reservoir, active_reservoir,
     inactive_pipe, active_pipe
   },
-  groups = { choppy = 2, water = 1, not_in_creative_inventory = 1 },
+  groups = { choppy = 2, snappy = 1, water = 1, not_in_creative_inventory = 1 },
   drop = inactive_pipe, -- don’t drop the active version
 
   after_destruct = function(pos)
