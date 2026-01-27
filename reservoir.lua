@@ -23,8 +23,8 @@ return function(on_construct_or_destruct)
     local water_level = core.get_meta(pos):get_int("water") or 0
     local reservoir_type = "irrigation:water_reservoir"
 
-    if (clicker and clicker:is_player()) and itemstack then
-      local wield_item = clicker:get_wielded_item():get_name()
+    if clicker and clicker:is_player() and itemstack then
+      local wield_item = itemstack:get_name()
 
       if wield_item == "bucket:bucket_water" or wield_item == "bucket:bucket_river_water" then
         water_level = math.min(water_level + 16, 63)  -- 4 water buckets to fill reservoir
